@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies API</title>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+        ul{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap:12px;
+            align-items: stretch;
+        }
+
+        li{
+            list-style: none;
+            display: flex;
+        }
+
+        article{
+            width: min(100%, 260px);
+            min-height: 100%;
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            gap: 8px;
+        }
+
+        img{
+            width: 100%;
+            height: clamp(220px, 30vw, 280px);
+            object-fit: cover;
+        }
+    </style>
+    <script type="module">
+
+        const main = document.querySelector('.movies')
+        const button = document.querySelector('.get')
+        const API_URL = '/movies'
+
+        function createMovieElement(movie) {
+            const li = document.createElement('li')
+            const article = document.createElement('article')
+            const title = document.createElement('h3')
+            const director = document.createElement('p')
+            const image = document.createElement('img')
+            const deleteButton = document.createElement('button')
+
+            article.dataset.id = movie.id
+            title.textContent = movie.title
+            director.textContent = movie.director
+            image.src = movie.poster
+            image.alt = `${movie.title} poster`
+            deleteButton.textContent = 'Delete'
+            deleteButton.dataset.role = 'delete'
+
+            article.append(title, director, image, deleteButton)
+            li.append(article)
+
+            return li
+        }
+
+        async function fetchApi() {
+            button.disabled = true
+
+            try {
+                const res = await fetch(API_URL)
+                const data = await res.json()
+                main.innerHTML = ''
+
+                data.forEach(movie => {
+                    main.append(createMovieElement(movie))
+                })
+            } finally {
+                button.disabled = false
+            }
+        }
+
+        document.addEventListener('click', async (e) => {
+            if(e.target.matches('[data-role="delete"]')){
+                const deleteButton = e.target
+                const movie = deleteButton.closest('article')
+                const movieId = movie.dataset.id
+
+                deleteButton.disabled = true
+
+                try {
+                    const res = await fetch(`${API_URL}/${movieId}`, {
+                        method: 'DELETE'
+                    })
+
+                    if(res.ok){
+                        const element = deleteButton.closest('li')
+                        element.remove()
+                        return
+                    }
+                } finally {
+                    deleteButton.disabled = false
+                }
+            }
+        })
+
+        button.addEventListener('click', fetchApi)
+        fetchApi()
+
+    </script>
+</head>
+<body>
+
+
+    <main>
+        <h1>Movies Api</h1>
+        <ul style="min-height: 50vh;" class="movies"></ul>
+    </main>
+    <button class="get">Load Movies</button>
+    
+</body>
+</html>
