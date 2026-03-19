@@ -139,6 +139,14 @@ Base URL:
 http://localhost:1234
 ```
 
+## Production
+
+Live URL:
+
+```text
+https://movies-api-node.onrender.com
+```
+
 Available endpoints:
 
 - `GET /movies`
