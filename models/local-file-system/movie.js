@@ -1,7 +1,10 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { randomUUID } from 'node:crypto'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const moviesPath = new URL('./movies.json', import.meta.url)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const moviesPath = path.join(__dirname, 'movies.json')
 
 const readMovies = async () => {
     const moviesJSON = await readFile(moviesPath, 'utf-8')
