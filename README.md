@@ -30,7 +30,7 @@ The same application can run with three different model implementations:
 ```text
 .
 ├── app.js
-├── controlers/
+├── controllers/
 ├── db/
 ├── middlewares/
 ├── models/
@@ -49,7 +49,7 @@ The same application can run with three different model implementations:
 This project uses a small MVC-style structure:
 
 - `routes/`: defines the HTTP endpoints
-- `controlers/`: handles the request/response flow
+- `controllers/`: handles the request/response flow
 - `models/`: contains the data access implementations
 - `schemas/`: validates input data with Zod
 - `app.js`: builds the Express app and injects the selected model
@@ -139,13 +139,9 @@ Base URL:
 http://localhost:1234
 ```
 
-## Production
+## Live Demo
 
-Live URL:
-
-```text
-https://movies-api-node.onrender.com
-```
+The project is live in production at [movies-api-node.onrender.com](https://movies-api-node.onrender.com).
 
 Available endpoints:
 
